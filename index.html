@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schitarrando</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: 1.2rem;
+      color: #555;
+    }
+    input {
+      padding: 0.5rem;
+      width: 300px;
+      margin-top: 2rem;
+    }
+    button {
+      display: block;
+      margin: 2rem auto;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Schitarrando</h1>
+  <h2>Life’s like a road that you travel on.</h2>
+  <input type="text" placeholder="Cerca per titolo o artista..." oninput="searchSongs(this.value)">
+  <button onclick="window.location.href='archive.html'">Vai all'Archivio</button>
+
+  <script>
+    function searchSongs(query) {
+      window.location.href = `archive.html?search=${encodeURIComponent(query)}`;
+    }
+  </script>
+</body>
+</html>

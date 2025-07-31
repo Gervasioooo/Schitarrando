@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archivio - Schitarrando</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    input, select { padding: 0.5rem; margin-right: 1rem; }
+    .song { margin-top: 1rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem; }
+    a { text-decoration: none; color: #333; }
+  </style>
+</head>
+<body>
+  <h1>Archivio</h1>
+  <input type="text" id="search" placeholder="Cerca...">
+  <select id="sort" onchange="loadSongs()">
+    <option value="title-asc">Titolo (A-Z)</option>
+    <option value="title-desc">Titolo (Z-A)</option>
+    <option value="artist-asc">Artista (A-Z)</option>
+    <option value="artist-desc">Artista (Z-A)</option>
+    <option value="date-asc">Data (Vecchi prima)</option>
+    <option value="date-desc">Data (Recenti prima)</option>
+  </select>
+  <div id="list"></div>
+
+  <script>
+    let songs = [];
+
+    async function loadSongs() {
+      const res = await fetch('songs.json');
+      songs = await res.json();
+      const search = document.getElementById('search').value.toLowerCase();
+      const sort = document.getElementById('sort').value;
+
+      let filtered = songs.filter(s =>
+        s.title.toLowerCase().includes(search) ||
+        s.artist.toLowerCase().includes(search)
+      );
+
+      filtered.sort((a, b) => {
+        let field = sort.split('-')[0];
+        let dir = sort.split('-')[1] === 'asc' ? 1 : -1;
+        if (field === 'date') {
+          return (new Date(a.date) - new Date(b.date)) * dir;
+        }
+        return a[field].localeCompare(b[field]) * dir;
+      });
+
+      const list = document.getElementById('list');
+      list.innerHTML = '';
+      for (let song of filtered) {
+        list.innerHTML += `<div class="song">
+          <a href="song.html?id=${song.id}"><strong>${song.title}</strong> - ${song.artist}</a>
+        </div>`;
+      }
+    }
+
+    document.getElementById('search').addEventListener('input', loadSongs);
+    // Prepopulate search from URL
+    const params = new URLSearchParams(window.location.search);
+    const initialSearch = params.get('search');
+    if (initialSearch) {
+      document.getElementById('search').value = initialSearch;
+    }
+    loadSongs();
+  </script>
+</body>
+</html>

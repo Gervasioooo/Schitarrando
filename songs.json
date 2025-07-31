@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ciao",
+    "title": "Ciao Bella",
+    "artist": "Fabio",
+    "date": "2024-01-01",
+    "youtube": "dQw4w9WgXcQ",
+    "pdf": "ciao-bella.pdf"
+  },
+  {
+    "id": "strada",
+    "title": "Strada Facendo",
+    "artist": "Baglioni",
+    "date": "2023-12-01",
+    "youtube": "",
+    "pdf": "strada-facendo.pdf"
+  }
+]

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Dettaglio Canzone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    iframe, embed { width: 100%; height: 400px; margin-top: 1rem; }
+    .container { max-width: 800px; margin: auto; }
+    .back { margin-bottom: 1rem; display: inline-block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="archive.html">&larr; Torna all'archivio</a>
+    <h1 id="title"></h1>
+    <h3 id="artist"></h3>
+    <div id="video"></div>
+    <div id="pdf"></div>
+    <script>
+      async function load() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        const res = await fetch('songs.json');
+        const songs = await res.json();
+        const song = songs.find(s => s.id === id);
+        if (!song) {
+          document.body.innerHTML = '<p>Canzone non trovata</p>';
+          return;
+        }
+        document.getElementById('title').textContent = song.title;
+        document.getElementById('artist').textContent = song.artist;
+        document.getElementById('video').innerHTML = song.youtube ?
+          `<iframe src="https://www.youtube.com/embed/${song.youtube}" frameborder="0" allowfullscreen></iframe>` : '';
+        document.getElementById('pdf').innerHTML = song.pdf ?
+          `<embed src="${song.pdf}" type="application/pdf">` : '<p>Nessun PDF disponibile.</p>';
+      }
+      load();
+    </script>
+  </div>
+</body>
+</html>
